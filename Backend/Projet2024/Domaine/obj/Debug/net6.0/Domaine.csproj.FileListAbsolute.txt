@@ -1,0 +1,11 @@
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\Domaine\bin\Debug\net6.0\Domaine.deps.json
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\Domaine\bin\Debug\net6.0\Domaine.dll
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\Domaine\bin\Debug\net6.0\Domaine.pdb
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\Domaine\obj\Debug\net6.0\Domaine.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\Domaine\obj\Debug\net6.0\Domaine.AssemblyInfoInputs.cache
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\Domaine\obj\Debug\net6.0\Domaine.AssemblyInfo.cs
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\Domaine\obj\Debug\net6.0\Domaine.csproj.CoreCompileInputs.cache
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\Domaine\obj\Debug\net6.0\Domaine.dll
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\Domaine\obj\Debug\net6.0\refint\Domaine.dll
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\Domaine\obj\Debug\net6.0\Domaine.pdb
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\Domaine\obj\Debug\net6.0\ref\Domaine.dll

@@ -1,0 +1,15 @@
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\DataAccesLayer\bin\Debug\net6.0\DataAccesLayer.deps.json
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\DataAccesLayer\bin\Debug\net6.0\DataAccesLayer.dll
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\DataAccesLayer\bin\Debug\net6.0\DataAccesLayer.pdb
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\DataAccesLayer\bin\Debug\net6.0\Domaine.dll
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\DataAccesLayer\bin\Debug\net6.0\Domaine.pdb
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\DataAccesLayer\obj\Debug\net6.0\DataAccesLayer.csproj.AssemblyReference.cache
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\DataAccesLayer\obj\Debug\net6.0\DataAccesLayer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\DataAccesLayer\obj\Debug\net6.0\DataAccesLayer.AssemblyInfoInputs.cache
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\DataAccesLayer\obj\Debug\net6.0\DataAccesLayer.AssemblyInfo.cs
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\DataAccesLayer\obj\Debug\net6.0\DataAccesLayer.csproj.CoreCompileInputs.cache
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\DataAccesLayer\obj\Debug\net6.0\DataAccesLayer.csproj.CopyComplete
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\DataAccesLayer\obj\Debug\net6.0\DataAccesLayer.dll
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\DataAccesLayer\obj\Debug\net6.0\refint\DataAccesLayer.dll
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\DataAccesLayer\obj\Debug\net6.0\DataAccesLayer.pdb
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\DataAccesLayer\obj\Debug\net6.0\ref\DataAccesLayer.dll
