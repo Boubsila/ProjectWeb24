@@ -37,3 +37,7 @@ C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Pr
 C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\Presentation\bin\Debug\net6.0\DataAccesLayer.dll
 C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\Presentation\bin\Debug\net6.0\DataAccesLayer.pdb
 C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\Presentation\bin\Debug\net6.0\Hl7.Fhir.Support.dll
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\Presentation\bin\Debug\net6.0\Microsoft.DotNet.PlatformAbstractions.dll
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\Presentation\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\Presentation\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\Presentation\obj\Debug\net6.0\Presentation.sourcelink.json
