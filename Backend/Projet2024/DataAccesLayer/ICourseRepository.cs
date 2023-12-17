@@ -12,5 +12,7 @@ namespace DataAccesLayer
         IEnumerable<Course> GetAll();
 
         void addCourse(Course course);
+        void UpdateCourse(int courseId, Course updatedCourse);
+        void DeleteCourse(int courseId);
     }
 }

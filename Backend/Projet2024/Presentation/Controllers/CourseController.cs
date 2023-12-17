@@ -14,6 +14,8 @@ namespace Presentation.Controllers
         {
             _courseService = courseService;
         }
+
+
         [HttpGet]
         public IEnumerable<Course> Get()
         {
@@ -26,10 +28,42 @@ namespace Presentation.Controllers
             _courseService.addCourse(course);
         }
 
-        [HttpGet("{id}")]
-        public Course GetById(int id)
+        // Endpoint update course
+        [HttpPut("update/{courseId}")]
+        public IActionResult UpdateCourse(int courseId, [FromBody] Course updatedCourse)
         {
-            return _courseService.GetCourseById(id);
+            try
+            {
+                _courseService.UpdateCourse(courseId, updatedCourse);
+                return Ok("Course updated successfully");
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // Endpoint delete course 
+        [HttpDelete("delete/{courseId}")]
+        public IActionResult DeleteCourse(int  courseId)
+        {
+            try
+            {
+                _courseService.DeleteCourse(courseId);
+                return Ok("Course deleted successfully");
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
     }
