@@ -13,3 +13,4 @@ C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Pr
 C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\DataAccesLayer\obj\Debug\net6.0\refint\DataAccesLayer.dll
 C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\DataAccesLayer\obj\Debug\net6.0\DataAccesLayer.pdb
 C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\DataAccesLayer\obj\Debug\net6.0\ref\DataAccesLayer.dll
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\DataAccesLayer\obj\Debug\net6.0\DataAccesLayer.sourcelink.json

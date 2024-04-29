@@ -1,48 +1,66 @@
 ﻿using DataAccesLayer;
 using Domaine;
-using Hl7.Fhir.Utility;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace BusinessLayer
 {
     public class CourseServices : ICourseService
     {
        private readonly ICourseRepository _courseRepository ;
-
+       
+        //init interface
         public CourseServices(ICourseRepository courseRepository)
         {
             _courseRepository = courseRepository ;
+            
         }
-        
-        public IEnumerable<Course> GetAll() 
-        {
-            return _courseRepository.GetAll();
-        }
+     
 
+        // 1.1.2 Course Management : Create a course (Dot 1/4)
         public void addCourse(Course course) 
         {
             _courseRepository.addCourse(course);
         }
 
-        public Course GetCourseById(int id)
-        {
-            
-            Course course = _courseRepository.GetAll().FirstOrDefault(c => c.Id == id);
+        // 1.1.2 Course Management : Update a course (Dot 2/4)
 
-            if (course != null)
+        public void UpdateCourse(int courseId, Course updatedCourse)
+        {
+            var existingCourse = _courseRepository.GetAll().FirstOrDefault(course => course.Id == courseId);
+
+            if (existingCourse != null)
             {
-                return course;
+                existingCourse.Name = updatedCourse.Name;
+                existingCourse.Description = updatedCourse.Description;
             }
             else
             {
-                //Temp Solution
-                Course c = new Course(id, "null", "null");
-                return c;
+                throw new ArgumentException($"Course with ID {courseId} not found");
             }
-
-          
         }
 
+        // 1.1.2 Course Management : delete a course (Dot 3/4)
+        public void DeleteCourse(int courseId)
+        {
+           
+            var courseToRemove = _courseRepository.GetAll().FirstOrDefault(courses => courses.Id == courseId);
+
+            if (courseToRemove != null)
+            {
+                _courseRepository.DeleteCourse(courseId);
+            }
+            else
+            {
+                throw new ArgumentException($"Course with ID {courseId} not found");
+            }
+        }
+
+        // 1.1.2 Course Management : List all available course (Dot 4/4)
+        public IEnumerable<Course> GetAll()
+        {
+            return _courseRepository.GetAll();
+        }
     }
 
 }

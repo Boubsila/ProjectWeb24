@@ -7,6 +7,9 @@ namespace BusinessLayer
     {
         IEnumerable< Course> GetAll();
         void addCourse(Course course);
-        Course GetCourseById(int Id);
+        void DeleteCourse(int courseId);
+        void UpdateCourse(int courseId, Course updatedCourse);
+
+
     }
 }
