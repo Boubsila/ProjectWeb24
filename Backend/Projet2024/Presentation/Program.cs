@@ -1,6 +1,8 @@
 using BusinessLayer;
 using DataAccesLayer;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Primitives;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,19 +15,26 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ICourseService, CourseServices>();
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 
-// Resolve CORS issue whith alow frontend with port 4200 to have acces to the backend
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(name: MyAllowSpecificOrigins,
-        builder =>
+
+
+
+//authentification config 
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
         {
-            builder.WithOrigins("http://localhost:4200")
-                   .AllowAnyHeader()
-                   .AllowAnyMethod();
-        });
-});
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        };
+    });
 
 var app = builder.Build();
 
@@ -37,29 +46,40 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseHttpsRedirection();
+
+// Resolve CORS issue whith alow frontend with port 4200 to have acces to the backend
+app.UseCors(options =>
+{
+    options.AllowAnyHeader();
+    options.AllowAnyMethod();
+    options.AllowAnyOrigin();
+});
+
+
 app.UseRouting();
 
-// Apply CORS policy
-app.UseCors(MyAllowSpecificOrigins);
+
 
 app.UseAuthorization();
 
 app.MapControllers();
 
 // create custom middleware 
-app.Use(async (context, next) =>
-{
-    context.Request.Headers.TryGetValue("user-agent", out StringValues headerValue);
-    if(headerValue.ToString().Contains("Edg"))
-        await next();
-    else
-    {
-        context.Response.StatusCode = 412;
-        await context.Response.WriteAsync("Please use chrome " + " " + headerValue);
-    }
-}
+//app.Use(async (context, next) =>
+//{
+//    context.Request.Headers.TryGetValue("user-agent", out StringValues headerValue);
+//    if(headerValue.ToString().Contains("Edg"))
+//        await next();
+//    else
+//    {
+//        context.Response.StatusCode = 412;
+//        await context.Response.WriteAsync("Please use chrome " + " " + headerValue);
+//    }
+//}
 
-);
+//);
 
 
 
