@@ -41,3 +41,11 @@ C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Pr
 C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\Presentation\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll
 C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\Presentation\bin\Debug\net6.0\Newtonsoft.Json.dll
 C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\Presentation\obj\Debug\net6.0\Presentation.sourcelink.json
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\Presentation\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\Presentation\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\Presentation\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\Presentation\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\Presentation\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\Presentation\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\Presentation\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\boubs\Desktop\Ephec2024\Projet développement Web\Projet2024\Backend\Projet2024\Presentation\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
