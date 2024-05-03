@@ -1,61 +1,150 @@
-﻿using Domaine;
+﻿using Domaine ;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace DataAccesLayer
 {
     public class CourseRepository : ICourseRepository
     {
-        //DB temp to replace with the Data base
-        private static List<Course> _db = new List<Course> { new Course(1,"web","Coure web"), new Course(2,"SGBD","Cours BD"), new Course(3,"Reseau","Cours de Reseau") };
+        
+        private readonly WebDbContext _context;
 
-
-        // 1.1.2 Course Management : Create a course (Dot 1/4)
-        public void addCourse(Course course)
+        public CourseRepository(WebDbContext context)
         {
-            if (_db.Any(c => c.Id == course.Id || c.Name == course.Name || c.Description == course.Description))
-            {
-                throw new ArgumentException($"Course with ID {course.Id} already exists");
-            }
-                _db.Add(course);
+            _context = context;
         }
 
-        // 1.1.2 Course Management : Update a course (Dot 2/4)
-        public void UpdateCourse(int courseId, Course updatedCourse)
+        //List of Course 'course'
+        public async Task<IEnumerable<Course>> GetAllCourses()
         {
-            var existingCourse = _db.FirstOrDefault(course => course.Id == courseId);
+            return await _context.courses.ToListAsync();
+        }
 
+
+        //Get Course by Id 'check'
+        public async Task<Course> GetCourseById(int courseId)
+        {
+            return await _context.courses.FindAsync(courseId);
+        }
+
+
+        //Add Course 'check'
+        public async Task AddCourse(Course course)
+        {
+           
+                
+                _context.courses.Add(course);
+
+               
+                await _context.SaveChangesAsync();
+          
+        }
+
+        
+        
+        //Update Course 'check'
+        public async Task UpdateCourse(int courseId, Course updatedCourse)
+        {
+            var existingCourse = await _context.courses.FindAsync(courseId);
             if (existingCourse != null)
             {
-               
                 existingCourse.Name = updatedCourse.Name;
                 existingCourse.Description = updatedCourse.Description;
-            }
-            else
-            {
-                throw new ArgumentException($"Course with ID {courseId} not found");
-            }
+
+                try {
+                    await _context.SaveChangesAsync();
+                }catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+             }
         }
 
-        // 1.1.2 Course Management : delete a course (Dot 3/4)
-        public void DeleteCourse(int courseId)
+
+        //Delete Course 'check'
+        public async Task DeleteCourse(int courseId)
         {
-            var courseToRemove = _db.FirstOrDefault(courses => courses.Id == courseId);
-
-            if (courseToRemove != null)
+            var course = await _context.courses.FindAsync(courseId);
+            if (course != null)
             {
-                _db.Remove(courseToRemove);
-            }
-            else
-            {
-                throw new ArgumentException($"Course with ID {courseId} not found");
+                _context.courses.Remove(course);
+                await _context.SaveChangesAsync();
             }
         }
 
-        // 1.1.2 Course Management : List all available course (Dot 4/4)
-        public IEnumerable<Course> GetAll()
+
+
+        // Get student in course 
+
+        public async Task<IEnumerable<dynamic>> GetStudentsInCourse(int courseId)
         {
-            return _db;
+            var students = await _context.users
+            .Where(u => _context.courses.Any(c => c.CourseId == courseId) && u.Role.RoleId == 3)
+            .Select(s => new { s.Name, s.FirstName, s.UserName })
+            .ToListAsync();
+
+            return students;
         }
 
-       
+
+
+
+
+        public async Task<IEnumerable<User>> GetInstructorsInCourse(int courseId)
+        {
+            var instructors = await _context.users.Where(u => u.Courses.Any(c => c.CourseId == courseId && u.Role.Name == "Instructor")).ToListAsync();
+            return instructors;
+        }
+
+        public async Task AssignInstructorToCourse(int courseId, int instructorId)
+        {
+            var course = await _context.courses.FindAsync(courseId);
+            var instructor = await _context.users.FindAsync(instructorId);
+
+            if (course != null && instructor != null)
+            {
+                // Assurez-vous que l'utilisateur est un instructeur
+                if (instructor.Role.RoleId != 2)
+                {
+                    throw new InvalidOperationException("L'utilisateur spécifié n'est pas un professeur.");
+                }
+
+                // Associez l'instructeur au cours en ajoutant l'instructeur au cours
+                //course.Users = instructor;
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
+
+
+
+        public async Task<IEnumerable<Note>> GetCourseGrades(int courseId)
+        {
+            var course = await _context.courses.Include(c => c.Notes).FirstOrDefaultAsync(c => c.CourseId == courseId);
+            return course.Notes;
+        }
+
+        public async Task AddGradeToStudentInCourse(int courseId, int studentId, float grade)
+        {
+            var course = await _context.courses.Include(c => c.Notes).FirstOrDefaultAsync(c => c.CourseId == courseId);
+            if (course != null)
+            {
+                //var student = course.Users.FirstOrDefault(u => u.UserId == studentId);
+                //if (student != null)
+                //{
+                //    if (student.Notes == null)
+                //    {
+                //        student.Notes = new List<Note>();
+                //    }
+                //    student.Notes.Add(new Note { Notes = grade });
+                //    await _context.SaveChangesAsync();
+                //}
+            }
+        }
+
+
+
+
     }
 }

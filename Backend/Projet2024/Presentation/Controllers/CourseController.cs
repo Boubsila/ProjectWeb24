@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Domaine;
 using BusinessLayer;
+using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Presentation.Controllers
 {
@@ -15,26 +17,59 @@ namespace Presentation.Controllers
             _courseService = courseService;
         }
 
-
+        // List of courses
         [HttpGet]
-        public IEnumerable<Course> Get()
+        [AllowAnonymous]
+        public Task< IEnumerable<Course> >Get()
         {
             return _courseService.GetAll();
         }
 
-        [HttpPost]
-        public void Post(Course course)
-        {
-            _courseService.addCourse(course);
-        }
 
-        // Endpoint update course
-        [HttpPut("update/{courseId}")]
-        public IActionResult UpdateCourse(int courseId, [FromBody] Course updatedCourse)
+        //Course by Id
+        [HttpGet("{courseId}")]
+        [AllowAnonymous] 
+        public async Task<IActionResult> GetCourseById(int courseId)
         {
             try
             {
-                _courseService.UpdateCourse(courseId, updatedCourse);
+                var course = await _courseService.GetCourseById(courseId);
+                if (course != null)
+                {
+                    return Ok(course); // Renvoie un code 200 (OK) avec le cours récupéré
+                }
+                else
+                {
+                    return NotFound(); // Renvoie un code 404 (Non trouvé) si le cours n'existe pas
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message); // Renvoie un code 400 (Bad Request) en cas d'erreur
+            }
+        }
+
+
+
+        //Add Course
+        [HttpPost ("AddCourse")]
+        [Authorize(Roles = "1,2")]
+        public async Task  Post( Course course)
+        {
+             _courseService.AddCourse(course);
+
+        }
+
+        
+        
+        // Endpoint update course
+        [HttpPut("update/{courseId}")]
+        [Authorize(Roles = "1,2")]
+        public async Task<IActionResult> UpdateCourse(int courseId, [FromBody] Course updatedCourse)
+        {
+            try
+            {
+                await _courseService.UpdateCourse(courseId, updatedCourse);
                 return Ok("Course updated successfully");
             }
             catch (ArgumentException ex)
@@ -47,13 +82,16 @@ namespace Presentation.Controllers
             }
         }
 
+
         // Endpoint delete course 
+     
         [HttpDelete("delete/{courseId}")]
-        public IActionResult DeleteCourse(int  courseId)
+        [Authorize(Roles = "1,2")]
+        public async Task<IActionResult> DeleteCourse(int courseId)
         {
             try
             {
-                _courseService.DeleteCourse(courseId);
+                await _courseService.DeleteCourse(courseId); // Attendre la méthode asynchrone
                 return Ok("Course deleted successfully");
             }
             catch (ArgumentException ex)
@@ -63,6 +101,29 @@ namespace Presentation.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+
+        // Endpoint Get student by Id course 
+        [HttpGet("{courseId}/students")]
+        //[Authorize(Roles = "1")]
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<dynamic>>> GetStudentsInCourse(int courseId)
+        {
+            try
+            {
+                var students = await _courseService.GetStudentsInCourse(courseId);
+                if (students == null)
+                {
+                    return NotFound(); // code 404
+                }
+                return Ok(students); 
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Une erreur s'est produite lors de la récupération des étudiants du cours : {ex.Message}");
+               
             }
         }
 
