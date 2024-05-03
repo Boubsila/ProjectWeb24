@@ -11,9 +11,8 @@ namespace Domaine
         public int CourseId { get;}
         public string Name { get; set; }
         public string Description { get; set; }
+        public ICollection<CourseUser>? CourseUsers { get; set; }
 
-        public List<Note>? Notes { get; set; }
-
-        public IEnumerable<User>? Users { get; set; }
+        public ICollection<CourseNote>? CourseNotes { get; set; }
     }
 }

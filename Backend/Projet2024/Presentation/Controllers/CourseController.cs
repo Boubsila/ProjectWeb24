@@ -127,5 +127,58 @@ namespace Presentation.Controllers
             }
         }
 
+
+
+
+        // Endpoint Get Instructor by Id course 'check'
+        [HttpGet("{courseId}/Instructor")]
+        //[Authorize(Roles = "1")]
+        [AllowAnonymous]
+        
+       
+        public async Task<ActionResult<IEnumerable<dynamic>>> GetInstructorsInCourse(int courseId)
+        {
+            try
+            {
+                var instructor = await _courseService.GetInstructorsInCourse(courseId);
+                if (instructor == null)
+                {
+                    return NotFound(); // code 404
+                }
+                return Ok(instructor);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Une erreur s'est produite lors de la récupération des instructeurs du cours : {ex.Message}");
+
+            }
+        }
+
+
+
+       
+
+        // Endpoint Assign instructor to course
+        [HttpPost("{courseId}/AssignInstructor")]
+        //[Authorize(Roles = "1")]
+        [AllowAnonymous]
+        public async Task<IActionResult> AssignInstructorToCourse(int courseId, int instructorId)
+        {
+            try
+            {
+                await _courseService.AssignInstructorToCourse(courseId, instructorId);
+                return Ok("Instructor assigned to course successfully");
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
     }
 }

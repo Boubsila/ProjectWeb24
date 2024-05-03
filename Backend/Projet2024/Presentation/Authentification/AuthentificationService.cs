@@ -90,7 +90,7 @@ namespace Presentation.Authentification
             string lowerCaseName = newUserDTO.Name.ToLower();
 
             //Vérifier si un utilisateur avec le même nom d'utilisateur existe déjà
-            var existingUser = await _context.users
+            var existingUser = await _context.Users
                 .AnyAsync(u => u.UserName.ToLower() == lowerCaseUserName);
 
             if (existingUser)
@@ -99,7 +99,7 @@ namespace Presentation.Authentification
             }
 
             // Vérifier si un utilisateur avec le même nom et prénom existe déjà
-            var existingUserByName = await _context.users
+            var existingUserByName = await _context.Users
                 .AnyAsync(u => u.Name.ToLower() == lowerCaseName && u.FirstName.ToLower() == lowerCaseFirstName);
 
             if (existingUserByName)
@@ -122,7 +122,7 @@ namespace Presentation.Authentification
             newUser.Password = HashPassword(newUser.Password, newUser.Salt);
 
             // Ajouter le nouvel utilisateur à la base de données
-            _context.users.Add(newUser);
+            _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
         }
 
@@ -131,21 +131,21 @@ namespace Presentation.Authentification
         //mettre a jour un user 
         public async Task UpdateUser(UserDTO updatedUserDTO)
         {
-            var userToUpdate = await _context.users.FindAsync(updatedUserDTO.Id);
+            var userToUpdate = await _context.Users.FindAsync(updatedUserDTO.Id);
 
             if (userToUpdate == null)
             {
                 throw new Exception("User not found");
             }
 
-            var existingUserWithSameLogin = await _context.users
+            var existingUserWithSameLogin = await _context.Users
                 .AnyAsync(u => u.UserName.ToLower() == updatedUserDTO.UserName.ToLower() && u.UserId != updatedUserDTO.Id);
             if (existingUserWithSameLogin)
             {
                 throw new Exception("User with this login already exists");
             }
 
-            var existingUserByName = await _context.users
+            var existingUserByName = await _context.Users
                 .AnyAsync(u => u.Name.ToLower() == updatedUserDTO.Name.ToLower() && u.FirstName.ToLower() == updatedUserDTO.FirstName.ToLower() && u.UserId != updatedUserDTO.Id);
             if (existingUserByName)
             {
@@ -163,21 +163,21 @@ namespace Presentation.Authentification
                 userToUpdate.Password = HashPassword(updatedUserDTO.Password, userToUpdate.Salt);
             }
 
-            _context.users.Update(userToUpdate);
+            _context.Users.Update(userToUpdate);
             await _context.SaveChangesAsync();
         }
 
         //supprimer un user 
         public async Task DeleteUser(int userId)
         {
-            var userToDelete = await _context.users.FindAsync(userId);
+            var userToDelete = await _context.Users.FindAsync(userId);
 
             if (userToDelete == null)
             {
                 throw new Exception("User not found");
             }
 
-            _context.users.Remove(userToDelete);
+            _context.Users.Remove(userToDelete);
 
             await _context.SaveChangesAsync();
 
@@ -199,7 +199,7 @@ namespace Presentation.Authentification
         //Login
         public string Login(string username, string password)
         {
-            var user = _context.users.SingleOrDefault(u => u.UserName.ToLower() == username.ToLower());
+            var user = _context.Users.SingleOrDefault(u => u.UserName.ToLower() == username.ToLower());
 
 
             if (user == null)

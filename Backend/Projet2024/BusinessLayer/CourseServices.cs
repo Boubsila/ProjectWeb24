@@ -35,7 +35,7 @@ namespace BusinessLayer
             _courseRepository.AddCourse(course);
         }
 
-        //Update Course 
+        //Update Course 'Check'
         public async Task UpdateCourse(int courseId, Course updatedCourse)
         {
             await _courseRepository.UpdateCourse(courseId, updatedCourse);
@@ -50,15 +50,26 @@ namespace BusinessLayer
 
 
        
-
-      
+        
+      // Get students in Course 'check'
         public async Task<IEnumerable<dynamic>> GetStudentsInCourse(int courseId)
         {
           return await _courseRepository.GetStudentsInCourse(courseId);
         }
 
+        // Get Instructor in course 'check'
+        public async Task<IEnumerable<dynamic>> GetInstructorsInCourse(int courseId)
+        {
+            return await _courseRepository.GetInstructorsInCourse(courseId);
+        }
 
-        
+
+
+
+        public async Task AssignInstructorToCourse(int courseId, int instructorId)
+        {
+             await _courseRepository.AssignInstructorToCourse(courseId, instructorId);
+        }
     }
 
 }

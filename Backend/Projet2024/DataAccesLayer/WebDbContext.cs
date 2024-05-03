@@ -11,32 +11,35 @@ namespace DataAccesLayer
     public class WebDbContext : DbContext
     {
         public WebDbContext(DbContextOptions<WebDbContext> options)
-    : base(options)
+            : base(options)
         {
         }
 
-
-        public DbSet<User> users { get; set; }
-        public DbSet<Role> roles { get; set; }
-
-        public DbSet<Course> courses { get; set; }
-
-        public DbSet<Note> notes { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<CourseNote> CourseNotes { get; set; }
+        public DbSet<CourseUser> CourseUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Course>()
                 .HasKey(n => n.CourseId);
+
+            modelBuilder.Entity<CourseUser>()
+                .HasKey(cu => cu.CourseUserId);
+
+            modelBuilder.Entity<CourseUser>()
+                .HasOne(cu => cu.User)
+                .WithMany(u => u.CourseUsers)
+                .HasForeignKey(cu => cu.UserId);
+
+            modelBuilder.Entity<CourseUser>()
+               .HasOne(cu => cu.Course)
+               .WithMany(c => c.CourseUsers)
+               .HasForeignKey(cu => cu.CourseId);
+
             base.OnModelCreating(modelBuilder);
-
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.EnableSensitiveDataLogging(); // Active le journal des données sensibles
-                                                        
-        }
-
-
-
     }
-}
+} 

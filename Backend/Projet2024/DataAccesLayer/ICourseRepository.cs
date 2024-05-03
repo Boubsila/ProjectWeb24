@@ -17,9 +17,9 @@ namespace DataAccesLayer
         Task UpdateCourse(int courseId, Course updatedCourse);
         Task DeleteCourse(int courseId);
         Task<IEnumerable<dynamic>> GetStudentsInCourse(int courseId);
-        Task<IEnumerable<User>> GetInstructorsInCourse(int courseId);
+        Task<IEnumerable<dynamic>> GetInstructorsInCourse(int courseId);
         Task AssignInstructorToCourse(int courseId, int instructorId);
-        Task<IEnumerable<Note>> GetCourseGrades(int courseId);
+        Task<IEnumerable<CourseNote>> GetCourseGrades(int courseId);
         Task AddGradeToStudentInCourse(int courseId, int studentId, float grade);
     }
 }

@@ -12,7 +12,9 @@ namespace BusinessLayer
         public  Task UpdateCourse(int courseId, Course updatedCourse);
 
         public  Task<IEnumerable<dynamic>> GetStudentsInCourse(int courseId);
+        public  Task<IEnumerable<dynamic>> GetInstructorsInCourse(int courseId);
 
+        public Task AssignInstructorToCourse(int courseId, int instructorId);
 
     }
 }
