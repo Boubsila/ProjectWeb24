@@ -16,7 +16,7 @@ namespace BusinessLayer
         }
 
 
-        // get list of course 'check '
+        // Get list of course 'check '
         public Task<IEnumerable<Course>> GetAll()
         {
             return _courseRepository.GetAllCourses();
@@ -49,9 +49,9 @@ namespace BusinessLayer
         }
 
 
-       
-        
-      // Get students in Course 'check'
+
+
+        // Get student in course 'check'
         public async Task<IEnumerable<dynamic>> GetStudentsInCourse(int courseId)
         {
           return await _courseRepository.GetStudentsInCourse(courseId);
@@ -65,11 +65,31 @@ namespace BusinessLayer
 
 
 
-
+        // Assing instructor to course 'check'
         public async Task AssignInstructorToCourse(int courseId, int instructorId)
         {
              await _courseRepository.AssignInstructorToCourse(courseId, instructorId);
         }
+
+
+        // Create/update Assignment For Course 'check'
+        public async Task UpdateAssignmentDeadlineForCourse(int courseId, DateTime deadline)
+        {
+            await _courseRepository.UpdateAssignmentDeadlineForCourse(courseId, deadline);
+        }
+
+
+        //Add Grade to Student
+        public async Task AddGradeToStudentInCourse(int courseId, int userId, float grade)
+        {
+          await _courseRepository.AddGradeToStudentInCourse(courseId, userId, grade);
+        }
+
+
+
+
+
+
     }
 
 }

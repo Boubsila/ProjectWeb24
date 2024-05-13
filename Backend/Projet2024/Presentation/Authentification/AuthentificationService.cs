@@ -129,9 +129,9 @@ namespace Presentation.Authentification
 
 
         //mettre a jour un user 
-        public async Task UpdateUser(UserDTO updatedUserDTO)
+        public async Task UpdateUser(int userId, UserDTO updatedUserDTO)
         {
-            var userToUpdate = await _context.Users.FindAsync(updatedUserDTO.Id);
+            var userToUpdate = await _context.Users.FindAsync(userId);
 
             if (userToUpdate == null)
             {
@@ -139,14 +139,14 @@ namespace Presentation.Authentification
             }
 
             var existingUserWithSameLogin = await _context.Users
-                .AnyAsync(u => u.UserName.ToLower() == updatedUserDTO.UserName.ToLower() && u.UserId != updatedUserDTO.Id);
+                .AnyAsync(u => u.UserName.ToLower() == updatedUserDTO.UserName.ToLower() && u.UserId != userId);
             if (existingUserWithSameLogin)
             {
                 throw new Exception("User with this login already exists");
             }
 
             var existingUserByName = await _context.Users
-                .AnyAsync(u => u.Name.ToLower() == updatedUserDTO.Name.ToLower() && u.FirstName.ToLower() == updatedUserDTO.FirstName.ToLower() && u.UserId != updatedUserDTO.Id);
+                .AnyAsync(u => u.Name.ToLower() == updatedUserDTO.Name.ToLower() && u.FirstName.ToLower() == updatedUserDTO.FirstName.ToLower() && u.UserId != userId);
             if (existingUserByName)
             {
                 throw new Exception("User with this name and first name combination already exists");
@@ -167,20 +167,22 @@ namespace Presentation.Authentification
             await _context.SaveChangesAsync();
         }
 
+
         //supprimer un user 
         public async Task DeleteUser(int userId)
         {
             var userToDelete = await _context.Users.FindAsync(userId);
 
-            if (userToDelete == null)
-            {
-                throw new Exception("User not found");
-            }
+          
+                if (userToDelete == null)
+                {
+                    throw new Exception("User not found");
+                }
 
-            _context.Users.Remove(userToDelete);
+                _context.Users.Remove(userToDelete);
 
-            await _context.SaveChangesAsync();
-
+                await _context.SaveChangesAsync();
+         
 
         }
 
@@ -201,22 +203,28 @@ namespace Presentation.Authentification
         {
             var user = _context.Users.SingleOrDefault(u => u.UserName.ToLower() == username.ToLower());
 
-
-            if (user == null)
+            try
             {
-                throw new Exception("User not found");
-            }
+                if (user == null)
+                {
+                    throw new Exception("User not found");
+                }
 
-            var hashedPassword = HashPassword(password, user.Salt);
-            if (user.Password == hashedPassword)
-            {
+                var hashedPassword = HashPassword(password, user.Salt);
+                if (user.Password == hashedPassword)
+                {
 
-                var token = GenerateJSONWebToken(username, user.RoleId.ToString());
-                return token;
-            }
-            else
+                    var token = GenerateJSONWebToken(username, user.RoleId.ToString());
+                    return token;
+                }
+                else
+                {
+                    throw new Exception("Invalid UserId or Password");
+                   
+                }
+            }catch (Exception ex) 
             {
-                throw new Exception("Invalid UserId or Password");
+                return (ex.Message);
             }
         }
 

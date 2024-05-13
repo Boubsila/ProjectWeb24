@@ -17,9 +17,10 @@ namespace Presentation.Controllers
             _courseService = courseService;
         }
 
-        // List of courses
+        // List of courses 'check'
         [HttpGet]
         [AllowAnonymous]
+        [Authorize(Roles="1")]
         public Task< IEnumerable<Course> >Get()
         {
             return _courseService.GetAll();
@@ -53,7 +54,8 @@ namespace Presentation.Controllers
 
         //Add Course
         [HttpPost ("AddCourse")]
-        [Authorize(Roles = "1,2")]
+        //[Authorize(Roles = "1,2")]
+        [AllowAnonymous]
         public async Task  Post( Course course)
         {
              _courseService.AddCourse(course);
@@ -105,7 +107,7 @@ namespace Presentation.Controllers
         }
 
 
-        // Endpoint Get student by Id course 
+        // Endpoint  Get student in course 'check'
         [HttpGet("{courseId}/students")]
         //[Authorize(Roles = "1")]
         [AllowAnonymous]
@@ -134,8 +136,7 @@ namespace Presentation.Controllers
         [HttpGet("{courseId}/Instructor")]
         //[Authorize(Roles = "1")]
         [AllowAnonymous]
-        
-       
+     
         public async Task<ActionResult<IEnumerable<dynamic>>> GetInstructorsInCourse(int courseId)
         {
             try
@@ -156,9 +157,9 @@ namespace Presentation.Controllers
 
 
 
-       
 
-        // Endpoint Assign instructor to course
+
+        // Assing instructor to course 'check'
         [HttpPost("{courseId}/AssignInstructor")]
         //[Authorize(Roles = "1")]
         [AllowAnonymous]
@@ -178,6 +179,66 @@ namespace Presentation.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
+
+        // Create/update Assignment For Course 'check' 
+        [HttpPost("create-assignment")]
+        [AllowAnonymous]
+        public async Task<IActionResult> CreateAssignmentForCourse(int courseId, DateTime deadline)
+        {
+            try
+            {
+                // Assurez-vous que le cours existe
+                var course = await _courseService.GetCourseById(courseId);
+                if (course == null)
+                {
+                    return NotFound($"Course with ID {courseId} not found.");
+                }
+
+                // Enregistrez la date limite des devoirs pour ce cours
+                await _courseService.UpdateAssignmentDeadlineForCourse(courseId, deadline);
+
+                return Ok("Assignment deadline updated successfully.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error updating assignment deadline: {ex.Message}");
+            }
+        }
+
+
+        // Add Grade to student 
+
+        [HttpPost("add-grade")]
+        [AllowAnonymous]
+        public async Task<IActionResult> AddGradeToStudentInCourse(int courseId, int userId, float grade)
+        {
+            try
+            {
+                
+                await _courseService.AddGradeToStudentInCourse(courseId, userId, grade);
+
+                
+                return Ok("Grade added to student in course successfully.");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                
+                return NotFound(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                
+                return StatusCode(500, $"Error adding grade to student in course: {ex.Message}");
+            }
+        }
+
 
 
     }

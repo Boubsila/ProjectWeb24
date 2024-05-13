@@ -21,7 +21,7 @@ builder.Services.AddSwaggerGen(option => {
     option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
-        Description = "Please enter a valid token!!!",
+        Description = "Please enter a valid token",
         Name = "Authorization",
         Type = SecuritySchemeType.Http,
         BearerFormat = "JWT",
@@ -46,6 +46,9 @@ builder.Services.AddSwaggerGen(option => {
 // Add services of interfaces
 builder.Services.AddScoped<ICourseService, CourseServices>();
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+builder.Services.AddScoped<IStudentService, StudentService>(); 
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+
 
 builder.Services.AddScoped<AuthentificationService, AuthentificationService>();
 
@@ -81,21 +84,7 @@ builder.Services.AddAuthentication(opt =>
 
 
 
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddJwtBearer(options =>
-//    {
-//        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-//        {
-//            ValidateIssuer = true,
-//            ValidateAudience = true,
-//            ValidateLifetime = true,
-//            ValidateIssuerSigningKey = true,
-//            ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
-//            ValidAudience = builder.Configuration["JwtSettings:Audience"],
-//            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"])),
-//            RoleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
-//        };
-//    });
+
 
 
 var app = builder.Build();

@@ -18,7 +18,7 @@ namespace Domaine
         public int UserId { get; set; }
         public User User { get; set; }
 
-        public int Note { get; set; }
+        public float Note { get; set; }
 
 
     }

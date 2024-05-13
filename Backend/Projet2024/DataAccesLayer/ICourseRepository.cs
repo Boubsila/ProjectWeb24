@@ -19,7 +19,11 @@ namespace DataAccesLayer
         Task<IEnumerable<dynamic>> GetStudentsInCourse(int courseId);
         Task<IEnumerable<dynamic>> GetInstructorsInCourse(int courseId);
         Task AssignInstructorToCourse(int courseId, int instructorId);
-        Task<IEnumerable<CourseNote>> GetCourseGrades(int courseId);
+        Task UpdateAssignmentDeadlineForCourse(int courseId, DateTime deadline);
+
         Task AddGradeToStudentInCourse(int courseId, int studentId, float grade);
+
+       
+
     }
 }

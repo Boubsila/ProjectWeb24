@@ -78,11 +78,12 @@ namespace DataAccesLayer
 
         public async Task<IEnumerable<dynamic>> GetStudentsInCourse(int courseId)
         {
-            var students = await _context.Users
-            .Where(u => _context.Courses.Any(c => c.CourseId == courseId) && u.Role.RoleId == 3)
-            .Select(s => new { s.Name, s.FirstName, s.UserName })
-            .ToListAsync();
-           
+            var students = await _context.CourseUsers
+                .Where(cu => cu.CourseId == courseId) // Filtre par ID de cours
+                .Where(cu => cu.User.RoleId == 3) // Filtre pour les étudiants (RoleId = 3)
+                .Select(cu => new { cu.User.Name, cu.User.FirstName, cu.User.UserName })
+                .ToListAsync();
+
             return students;
         }
 
@@ -92,19 +93,16 @@ namespace DataAccesLayer
         // Get Instructor in course 'check'
         public async Task<IEnumerable<dynamic>> GetInstructorsInCourse(int courseId)
         {
-            var instructors = await _context.Users
-                .Where(u => _context.Courses.Any(c => c.CourseId == courseId && u.Role.Name == "Instructor"))
-                .Select(s => new { s.Name, s.FirstName, s.UserName })
+            var instructors = await _context.CourseUsers
+                .Where(cu => cu.CourseId == courseId) // Filtre par ID de cours
+                .Where(cu => cu.User.RoleId == 2)
+                .Select(cu => new { cu.User.Name, cu.User.FirstName, cu.User.UserName })
                 .ToListAsync();
             return instructors;
         }
 
 
-
-
-
-
-        // Assing instructor to course 
+        // Assing instructor to course 'check'
         public async Task AssignInstructorToCourse(int courseId, int instructorId)
         {
             var course = await _context.Courses.FindAsync(courseId);
@@ -112,16 +110,90 @@ namespace DataAccesLayer
 
             if (course != null && instructor != null)
             {
-                // Assurez-vous que l'utilisateur est un instructeur
-                //if (instructor.Role.RoleId != 2)
-                //{
-                //    throw new InvalidOperationException("L'utilisateur spécifié n'est pas un professeur.");
-                //}
+                // Vérifier si l'utilisateur est déjà associé au cours en tant qu'instructeur
+                var existingAssignment = await _context.CourseUsers
+                    .FirstOrDefaultAsync(cu => cu.CourseId == courseId && cu.UserId == instructorId);
 
-                // Associez l'instructeur au cours en ajoutant l'instructeur à la liste des utilisateurs du cours
-               // course.CourseUsers = new List<User> { instructor };
+                if (existingAssignment != null)
+                {
+                    // L'utilisateur est déjà un instructeur pour ce cours
+                    return;
+                }
+
+                // Créer une nouvelle entrée dans la table de liaison CourseUser
+                var courseUser = new CourseUser
+                {
+                    CourseId = courseId,
+                    UserId = instructorId
+                };
+
+                _context.CourseUsers.Add(courseUser);
 
                 await _context.SaveChangesAsync();
+            }
+        }
+
+
+        // Create/update Assignment For Course 'check'
+        public async Task UpdateAssignmentDeadlineForCourse(int courseId, DateTime deadline)
+        {
+            var course = await _context.Courses.FindAsync(courseId);
+            if (course != null)
+            {
+                course.AssignmentDeadline = deadline;
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new KeyNotFoundException($"Course with ID {courseId} not found.");
+            }
+        }
+
+
+
+        // Add Grade to student 'check'
+        public async Task AddGradeToStudentInCourse(int courseId, int userId, float grade)
+        {
+            try
+            {
+                // Vérifie si le cours existe
+                var course = await _context.Courses.FindAsync(courseId);
+                if (course == null)
+                {
+                    throw new KeyNotFoundException($"Le cours avec l'ID {courseId} n'a pas été trouvé.");
+                }
+
+                // Vérifie si l'utilisateur est un étudiant (roleId = 3)
+                var student = await _context.Users
+                    .Include(u => u.Role)
+                    .FirstOrDefaultAsync(u => u.UserId == userId && u.RoleId == 3);
+                if (student == null)
+                {
+                    throw new InvalidOperationException($"L'utilisateur avec l'ID {userId} n'est pas un étudiant.");
+                }
+
+                // Vérifie si l'étudiant est inscrit au cours
+                var courseUser = await _context.CourseUsers
+                    .FirstOrDefaultAsync(cu => cu.CourseId == courseId && cu.UserId == userId);
+                if (courseUser == null)
+                {
+                    throw new InvalidOperationException($"L'étudiant avec l'ID {userId} n'est pas inscrit au cours avec l'ID {courseId}.");
+                }
+
+                // Crée une nouvelle note pour l'étudiant dans le cours
+                var courseNote = new CourseNote
+                {
+                    CourseId = courseId,
+                    UserId = userId,
+                    Note = grade
+                };
+
+                _context.CourseNotes.Add(courseNote);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Erreur lors de l'ajout de la note à l'étudiant dans le cours : {ex.Message}");
             }
         }
 
@@ -129,31 +201,6 @@ namespace DataAccesLayer
 
 
 
-
-        public async Task<IEnumerable<CourseNote>> GetCourseGrades(int courseId)
-        {
-            //var course = await _context.courses.Include(c => c.Notes).FirstOrDefaultAsync(c => c.CourseId == courseId);
-            //return course.Notes;
-            return null;
-        }
-
-        public async Task AddGradeToStudentInCourse(int courseId, int studentId, float grade)
-        {
-            //var course = await _context.courses.Include(c => c.Notes).FirstOrDefaultAsync(c => c.CourseId == courseId);
-            //if (course != null)
-            //{
-            //    //var student = course.Users.FirstOrDefault(u => u.UserId == studentId);
-            //    //if (student != null)
-            //    //{
-            //    //    if (student.Notes == null)
-            //    //    {
-            //    //        student.Notes = new List<Note>();
-            //    //    }
-            //    //    student.Notes.Add(new Note { Notes = grade });
-            //    //    await _context.SaveChangesAsync();
-            //    //}
-            //}
-        }
 
 
 

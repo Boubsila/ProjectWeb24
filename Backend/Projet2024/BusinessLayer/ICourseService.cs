@@ -5,7 +5,7 @@ namespace BusinessLayer
 {
     public interface ICourseService
     {
-      Task<  IEnumerable< Course>> GetAll();
+        Task<  IEnumerable< Course>> GetAll();
         Task<Course> GetCourseById(int courseId);
         Task AddCourse(Course course);
         public  Task DeleteCourse(int courseId);
@@ -15,6 +15,7 @@ namespace BusinessLayer
         public  Task<IEnumerable<dynamic>> GetInstructorsInCourse(int courseId);
 
         public Task AssignInstructorToCourse(int courseId, int instructorId);
-
+        Task UpdateAssignmentDeadlineForCourse(int courseId, DateTime deadline);
+        Task AddGradeToStudentInCourse(int courseId, int studentId, float grade);
     }
 }

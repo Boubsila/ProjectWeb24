@@ -17,103 +17,94 @@ namespace DataAccesLayer
             _context = context;
         }
 
-        public async Task<IEnumerable<User>> GetAllStudents()
+     
+
+
+        //Get All students 'check'
+        public async Task<IEnumerable<dynamic>> GetAllStudents()
         {
-            return await _context.Users.ToListAsync();
+           var students =  await _context.Users
+                .Where(u => u.RoleId == 3)
+                .Select(u => new
+                {
+                    u.UserId,
+                    u.Name,
+                    u.FirstName,
+                    u.UserName
+                })
+                .ToListAsync();
+            return students;
         }
 
-        public async Task<User> GetStudentById(int studentId)
+
+        //Get student by Id 'Check'
+        public async Task<dynamic> GetStudentById(int studentId)
         {
-            return await _context.Users.FindAsync(studentId);
+           var student =  await _context.Users
+                .Where(u => u.UserId == studentId && u.RoleId == 3)
+                .Select(u => new
+                {
+                    UserId = u.UserId,
+                    Name = u.Name,
+                    FirstName = u.FirstName,
+                    UserName = u.UserName
+                })
+                .FirstOrDefaultAsync();
+
+            return student;
         }
 
-        public async Task AddStudent(User student)
+
+        //Get Courses for student 'check'
+        public async Task<IEnumerable<Course>> GetCoursesForStudent(int studentId)
         {
-            await _context.Users.AddAsync(student);
+            var courses = await _context.Courses
+                .Where(c => c.CourseUsers.Any(cu => cu.UserId == studentId) &&
+                            _context.Users.Any(u => u.UserId == studentId && u.RoleId == 3))
+                .ToListAsync();
+
+            return courses;
+        }
+
+
+        //Enrolle Student in course 'check'
+        public async Task EnrollStudentInCourse(int studentId, int courseId)
+        {
+            // Vérifier si l'étudiant existe
+            var student = await _context.Users.FirstOrDefaultAsync(u => u.UserId == studentId && u.RoleId == 3);
+            if (student == null)
+            {
+                throw new InvalidOperationException("L'utilisateur spécifié n'est pas un étudiant.");
+            }
+
+            // Vérifier si le cours existe
+            var course = await _context.Courses.FindAsync(courseId);
+            if (course == null)
+            {
+                throw new InvalidOperationException("Le cours spécifié n'existe pas.");
+            }
+
+            // Vérifier si l'étudiant est déjà inscrit au cours
+            var existingEnrollment = await _context.CourseUsers
+                .FirstOrDefaultAsync(cu => cu.UserId == studentId && cu.CourseId == courseId);
+            if (existingEnrollment != null)
+            {
+                throw new InvalidOperationException("L'étudiant est déjà inscrit à ce cours.");
+            }
+
+            // Créer une nouvelle inscription pour l'étudiant au cours
+            var newEnrollment = new CourseUser { UserId = studentId, CourseId = courseId };
+            _context.CourseUsers.Add(newEnrollment);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateStudent(int studentId, User updatedStudent)
-        {
-            var existingStudent = await _context.Users.FindAsync(studentId);
 
-            if (existingStudent != null)
-            {
-                existingStudent.Name = updatedStudent.Name;
-                existingStudent.FirstName = updatedStudent.FirstName;
-                existingStudent.RoleId = updatedStudent.RoleId;
 
-                _context.Users.Update(existingStudent);
-                await _context.SaveChangesAsync();
-            }
-            else
-            {
-                throw new KeyNotFoundException($"Student with ID {studentId} not found");
-            }
-        }
 
-        public async Task DeleteStudent(int studentId)
-        {
-            var studentToDelete = await _context.Users.FindAsync(studentId);
+        
 
-            if (studentToDelete != null)
-            {
-                _context.Users.Remove(studentToDelete);
-                await _context.SaveChangesAsync();
-            }
-            else
-            {
-                throw new KeyNotFoundException($"Student with ID {studentId} not found");
-            }
-        }
 
-        public async Task<IEnumerable<Course>> GetCoursesForStudent(int studentId)
-        {
-            //var student = await _context.users.Include(u => u.Courses).FirstOrDefaultAsync(u => u.UserId == studentId);
-            //return student?.Courses;
-            return null;
-        }
 
-        //public async Task EnrollStudentInCourse(int studentId, int courseId)
-        //{
-        //    var student = await _context.users.Include(u => u.Courses).FirstOrDefaultAsync(u => u.UserId == studentId);
-        //    var courseToAdd = await _context.courses.FindAsync(courseId);
 
-        //    if (student != null && courseToAdd != null)
-        //    {
-        //        if (student.Courses == null)
-        //        {
-        //            student.Courses = new Course[] { };
-        //        }
-
-        //        student.Courses.Append(courseToAdd);
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    else
-        //    {
-        //        throw new KeyNotFoundException($"Student or Course not found");
-        //    }
-        //}
-
-        public async Task UnenrollStudentFromCourse(int studentId, int courseId)
-        {
-            //var student = await _context.users.Include(u => u.Course).FirstOrDefaultAsync(u => u.UserId == studentId);
-            //var courseToRemove = student?.Course?.FirstOrDefault(c => c.CourseId == courseId);
-
-            //if (student != null && courseToRemove != null)
-            //{
-            //    student.Course = student.Course.Except(new Course[] { courseToRemove });
-            //    await _context.SaveChangesAsync();
-            //}
-            //else
-            //{
-            //    throw new KeyNotFoundException($"Student or Course not found");
-            //}
-        }
-
-        public Task EnrollStudentInCourse(int studentId, int courseId)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -60,5 +60,40 @@ namespace Presentation.Controllers
         {
             return _authenticationService.Login(login, password); // Appelle la méthode Login du service d'authentification avec le nom d'utilisateur et le mot de passe fournis, et renvoie le jeton d'authentification généré
         }
+
+
+        // Endpoint pour modifier un utilisateur
+        [HttpPut("{id}")]
+        //[Authorize(Roles = "1")] 
+        [AllowAnonymous]
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UserDTO updatedUserDTO)
+        {
+            try
+            {
+                await _authenticationService.UpdateUser(id, updatedUserDTO);
+                return Ok("User updated successfully.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+
+        // Endpoint pour supprimer un utilisateur
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "1")] 
+        
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            try
+            {
+                await _authenticationService.DeleteUser(id);
+                return Ok("User deleted successfully.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
     }
 }
