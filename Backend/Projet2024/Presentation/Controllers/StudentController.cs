@@ -20,7 +20,7 @@ namespace Presentation.Controllers
 
         // GET: api/Student
         [HttpGet]
-        [Authorize(Roles = "2")]
+        //[Authorize(Roles = "2")]
         public async Task<ActionResult<IEnumerable<User>>> GetAllStudents()
         {
             var students = await _studentService.GetAllStudents();

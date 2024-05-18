@@ -64,8 +64,8 @@ namespace Presentation.Controllers
 
         // Endpoint pour modifier un utilisateur
         [HttpPut("{id}")]
-        //[Authorize(Roles = "1")] 
-        [AllowAnonymous]
+        [Authorize(Roles = "1")] 
+        //[AllowAnonymous]
         public async Task<IActionResult> UpdateUser(int id, [FromBody] UserDTO updatedUserDTO)
         {
             try
