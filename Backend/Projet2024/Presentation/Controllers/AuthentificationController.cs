@@ -11,7 +11,7 @@ namespace Presentation.Controllers
     
     [Route("api/[controller]")] 
     [ApiController] 
-    //[Authorize]
+    [Authorize]
     public class AuthentificationController : ControllerBase 
     {
         private readonly ILogger<AuthentificationController> _logger; 
