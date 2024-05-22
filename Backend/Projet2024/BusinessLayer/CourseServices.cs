@@ -1,47 +1,94 @@
 ﻿using DataAccesLayer;
 using Domaine;
-using Hl7.Fhir.Utility;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BusinessLayer
 {
     public class CourseServices : ICourseService
     {
-       private readonly ICourseRepository _courseRepository ;
+        private readonly ICourseRepository _courseRepository ;
 
+        //init interface
         public CourseServices(ICourseRepository courseRepository)
         {
-            _courseRepository = courseRepository ;
+            _courseRepository = courseRepository;
+
         }
-        
-        public IEnumerable<Course> GetAll() 
+
+
+        // Get list of course 'check '
+        public Task<IEnumerable<Course>> GetAll()
         {
-            return _courseRepository.GetAll();
+            return _courseRepository.GetAllCourses();
         }
 
-        public void addCourse(Course course) 
+        //Get course by Id 'check '
+        public async Task<Course> GetCourseById(int courseId)
         {
-            _courseRepository.addCourse(course);
+            return await _courseRepository.GetCourseById(courseId);
         }
 
-        public Course GetCourseById(int id)
+
+        //Add course 'check'
+        public async  Task AddCourse(Course course)
         {
-            
-            Course course = _courseRepository.GetAll().FirstOrDefault(c => c.Id == id);
-
-            if (course != null)
-            {
-                return course;
-            }
-            else
-            {
-                //Temp Solution
-                Course c = new Course(id, "null", "null");
-                return c;
-            }
-
-          
+            _courseRepository.AddCourse(course);
         }
+
+        //Update Course 'Check'
+        public async Task UpdateCourse(int courseId, Course updatedCourse)
+        {
+            await _courseRepository.UpdateCourse(courseId, updatedCourse);
+        }
+
+
+        //delete course 'check'
+        public async Task DeleteCourse(int courseId)
+        {
+            await _courseRepository.DeleteCourse(courseId); // Attendre la méthode asynchrone
+        }
+
+
+
+
+        // Get student in course 'check'
+        public async Task<IEnumerable<dynamic>> GetStudentsInCourse(int courseId)
+        {
+          return await _courseRepository.GetStudentsInCourse(courseId);
+        }
+
+        // Get Instructor in course 'check'
+        public async Task<IEnumerable<dynamic>> GetInstructorsInCourse(int courseId)
+        {
+            return await _courseRepository.GetInstructorsInCourse(courseId);
+        }
+
+
+
+        // Assing instructor to course 'check'
+        public async Task AssignInstructorToCourse(int courseId, int instructorId)
+        {
+             await _courseRepository.AssignInstructorToCourse(courseId, instructorId);
+        }
+
+
+        // Create/update Assignment For Course 'check'
+        public async Task UpdateAssignmentDeadlineForCourse(int courseId, DateTime deadline)
+        {
+            await _courseRepository.UpdateAssignmentDeadlineForCourse(courseId, deadline);
+        }
+
+
+        //Add Grade to Student
+        public async Task AddGradeToStudentInCourse(int courseId, int userId, float grade)
+        {
+          await _courseRepository.AddGradeToStudentInCourse(courseId, userId, grade);
+        }
+
+
+
+
+
 
     }
 

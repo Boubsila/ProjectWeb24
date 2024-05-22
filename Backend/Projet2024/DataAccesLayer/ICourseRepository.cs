@@ -9,8 +9,21 @@ namespace DataAccesLayer
 {
    public interface ICourseRepository
     {
-        IEnumerable<Course> GetAll();
+      
 
-        void addCourse(Course course);
+        Task<IEnumerable<Course>> GetAllCourses();
+        Task<Course> GetCourseById(int courseId);
+        Task AddCourse(Course course);
+        Task UpdateCourse(int courseId, Course updatedCourse);
+        Task DeleteCourse(int courseId);
+        Task<IEnumerable<dynamic>> GetStudentsInCourse(int courseId);
+        Task<IEnumerable<dynamic>> GetInstructorsInCourse(int courseId);
+        Task AssignInstructorToCourse(int courseId, int instructorId);
+        Task UpdateAssignmentDeadlineForCourse(int courseId, DateTime deadline);
+
+        Task AddGradeToStudentInCourse(int courseId, int studentId, float grade);
+
+       
+
     }
 }
