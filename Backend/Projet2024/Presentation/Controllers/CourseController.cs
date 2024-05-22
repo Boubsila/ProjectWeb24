@@ -108,14 +108,14 @@ namespace Presentation.Controllers
 
 
         // Endpoint  Get student in course 'check'
-        [HttpGet("{courseId}/students")]
+        [HttpGet("student/{courseIdSt}")]
         //[Authorize(Roles = "1")]
         [AllowAnonymous]
-        public async Task<ActionResult<IEnumerable<dynamic>>> GetStudentsInCourse(int courseId)
+        public async Task<ActionResult<IEnumerable<dynamic>>> GetStudentsInCourse(int courseIdSt)
         {
             try
             {
-                var students = await _courseService.GetStudentsInCourse(courseId);
+                var students = await _courseService.GetStudentsInCourse(courseIdSt);
                 if (students == null)
                 {
                     return NotFound(); // code 404
