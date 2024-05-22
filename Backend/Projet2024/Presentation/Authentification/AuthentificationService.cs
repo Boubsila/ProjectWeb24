@@ -22,7 +22,7 @@ namespace Presentation.Authentification
 
         //genérer le token 
        
-        private string GenerateJSONWebToken(string username, string role)
+        private string GenerateJSONWebToken(string Name,string FirstName,int Id, string role)
         {
             var secretKey = _config["JwtSettings:SecretKey"];
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
@@ -30,11 +30,15 @@ namespace Presentation.Authentification
 
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, username),
+                new Claim(JwtRegisteredClaimNames.Sub,$"{Name+" "} {FirstName} "),
+                new Claim(JwtRegisteredClaimNames.NameId,$"{Id}"),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds().ToString()),
-                new Claim(ClaimTypes.Role, role)
+                new Claim(ClaimTypes.Role, role),
+      
+   
             };
+
 
             var claimIdentity = new ClaimsIdentity(claims, "JwtBearer");
 
@@ -214,7 +218,7 @@ namespace Presentation.Authentification
                 if (user.Password == hashedPassword)
                 {
 
-                    var token = GenerateJSONWebToken(username, user.RoleId.ToString());
+                    var token = GenerateJSONWebToken(user.Name,user.FirstName,user.UserId, user.RoleId.ToString()); ;
                     return token;
                 }
                 else
