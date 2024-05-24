@@ -2,65 +2,94 @@
 using Domaine;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace BusinessLayer
 {
     public class CourseServices : ICourseService
     {
-       private readonly ICourseRepository _courseRepository ;
-       
+        private readonly ICourseRepository _courseRepository ;
+
         //init interface
         public CourseServices(ICourseRepository courseRepository)
         {
-            _courseRepository = courseRepository ;
-            
-        }
-     
+            _courseRepository = courseRepository;
 
-        // 1.1.2 Course Management : Create a course (Dot 1/4)
-        public void addCourse(Course course) 
+        }
+
+
+        // Get list of course 'check '
+        public Task<IEnumerable<Course>> GetAll()
         {
-            _courseRepository.addCourse(course);
+            return _courseRepository.GetAllCourses();
         }
 
-        // 1.1.2 Course Management : Update a course (Dot 2/4)
-
-        public void UpdateCourse(int courseId, Course updatedCourse)
+        //Get course by Id 'check '
+        public async Task<Course> GetCourseById(int courseId)
         {
-            var existingCourse = _courseRepository.GetAll().FirstOrDefault(course => course.Id == courseId);
-
-            if (existingCourse != null)
-            {
-                existingCourse.Name = updatedCourse.Name;
-                existingCourse.Description = updatedCourse.Description;
-            }
-            else
-            {
-                throw new ArgumentException($"Course with ID {courseId} not found");
-            }
+            return await _courseRepository.GetCourseById(courseId);
         }
 
-        // 1.1.2 Course Management : delete a course (Dot 3/4)
-        public void DeleteCourse(int courseId)
+
+        //Add course 'check'
+        public async  Task AddCourse(Course course)
         {
-           
-            var courseToRemove = _courseRepository.GetAll().FirstOrDefault(courses => courses.Id == courseId);
-
-            if (courseToRemove != null)
-            {
-                _courseRepository.DeleteCourse(courseId);
-            }
-            else
-            {
-                throw new ArgumentException($"Course with ID {courseId} not found");
-            }
+            _courseRepository.AddCourse(course);
         }
 
-        // 1.1.2 Course Management : List all available course (Dot 4/4)
-        public IEnumerable<Course> GetAll()
+        //Update Course 'Check'
+        public async Task UpdateCourse(int courseId, Course updatedCourse)
         {
-            return _courseRepository.GetAll();
+            await _courseRepository.UpdateCourse(courseId, updatedCourse);
         }
+
+
+        //delete course 'check'
+        public async Task DeleteCourse(int courseId)
+        {
+            await _courseRepository.DeleteCourse(courseId); // Attendre la méthode asynchrone
+        }
+
+
+
+
+        // Get student in course 'check'
+        public async Task<IEnumerable<dynamic>> GetStudentsInCourse(int courseId)
+        {
+          return await _courseRepository.GetStudentsInCourse(courseId);
+        }
+
+        // Get Instructor in course 'check'
+        public async Task<IEnumerable<dynamic>> GetInstructorsInCourse(int courseId)
+        {
+            return await _courseRepository.GetInstructorsInCourse(courseId);
+        }
+
+
+
+        // Assing instructor to course 'check'
+        public async Task AssignInstructorToCourse(int courseId, int instructorId)
+        {
+             await _courseRepository.AssignInstructorToCourse(courseId, instructorId);
+        }
+
+
+        // Create/update Assignment For Course 'check'
+        public async Task UpdateAssignmentDeadlineForCourse(int courseId, DateTime deadline)
+        {
+            await _courseRepository.UpdateAssignmentDeadlineForCourse(courseId, deadline);
+        }
+
+
+        //Add Grade to Student
+        public async Task AddGradeToStudentInCourse(int courseId, int userId, float grade)
+        {
+          await _courseRepository.AddGradeToStudentInCourse(courseId, userId, grade);
+        }
+
+
+
+
+
+
     }
 
 }
