@@ -20,7 +20,7 @@ namespace Presentation.Controllers
         // List of courses 'check'
         [HttpGet]
         [AllowAnonymous]
-        [Authorize(Roles="1")]
+        //[Authorize(Roles="1")]
         public Task< IEnumerable<Course> >Get()
         {
             return _courseService.GetAll();
@@ -88,7 +88,7 @@ namespace Presentation.Controllers
         // Endpoint delete course 
      
         [HttpDelete("delete/{courseId}")]
-        [Authorize(Roles = "1,2")]
+       // [Authorize(Roles = "1,2")]
         public async Task<IActionResult> DeleteCourse(int courseId)
         {
             try

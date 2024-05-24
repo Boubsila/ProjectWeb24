@@ -29,14 +29,14 @@ namespace DataAccesLayer
 
 
         //Add Course 'check'
-        public async Task AddCourse(Course course)
+        public async Task AddCourse( Course course)
         {
-           
-                
-                _context.Courses.Add(course);
 
-               
-                await _context.SaveChangesAsync();
+
+             _context.Courses.Add(course);
+
+          
+            await _context.SaveChangesAsync();
           
         }
 
