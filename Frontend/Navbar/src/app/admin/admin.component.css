@@ -1,0 +1,47 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    overflow-y: auto;
+    z-index: 1000;
+    width: 250px; /* Ajustez la largeur de la barre latérale selon vos besoins */
+    padding-top: 60px; /* Ajustez la marge supérieure si nécessaire */
+  }
+  
+  .col-9 {
+    margin-left: 250px; /* Ajoute une marge à droite du contenu principal pour éviter le recouvrement */
+  }
+
+ 
+  .card-button {
+    background-color: rgb(141, 73, 9);
+    width: 200px;
+    height: 290px;
+    padding: 10px;
+    margin: 10px;
+    display: inline-block;
+    border-radius: 10px;
+    box-shadow: 10px 10px 10px rgba(53, 22, 22, 0.5);
+    text-align: center;
+    cursor: pointer;
+    color: rgb(178, 224, 104);
+    text-decoration: underline;
+   
+  }
+  
+  
+  .card-button:focus {
+    outline: none;
+  }
+
+  .card-button:hover {
+    background-color: rgb(141, 70, 233);
+    color: rgb(255, 255, 255);
+    
+  }
+
+ 
+  
+
+  

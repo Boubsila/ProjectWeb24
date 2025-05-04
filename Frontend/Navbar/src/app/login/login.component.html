@@ -1,0 +1,36 @@
+<div class="container-fluid justify-content-center ">
+  <div class="row justify-content-center">
+    <div class="col-md-4 mt-5">
+      <div class="card ">
+        <div class="card-header text-center">
+          <h2 class="font-weight-bold text-center text-primary">Login</h2>
+        </div>
+        <div class="card-body">
+          <!-- Form pour nommer le formulaire et déclencher la fonction login -->
+          <form name="form" #f="ngForm" (ngSubmit)="f.form.valid && login()">
+            <div class="form-group mt-2">
+              <!-- Two way data binding avec ngModel pour le champ utilisateur -->
+              <input type="text" [(ngModel)]="form.username" class="form-control" id="user" name="user"
+                placeholder="Enter your username" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
+              <div *ngIf="f.submitted && f.controls['user'].errors" class="text-danger">
+                <div *ngIf="f.controls['user'].errors['required']">User is required</div>
+                <div *ngIf="f.controls['user'].errors['pattern']">Invalid username format</div>
+              </div>
+            </div>
+            <div class="form-group mt-2">
+              <!-- Two way data binding avec ngModel pour le champ mot de passe -->
+              <input type="password" [(ngModel)]="form.password" class="form-control" id="password" name="password"
+                placeholder="Enter your password" autocomplete="off" required minlength="5">
+              <div *ngIf="f.submitted && f.controls['password'].errors" class="text-danger">
+                <div *ngIf="f.controls['password'].errors['required']">Password is required</div>
+                <div *ngIf="f.controls['password'].errors['minlength']">Password must be at least 5 characters</div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary m-2">Login</button>
+            <button type="button" class="btn btn-secondary m-2" [routerLink]="['/inscription']">Sign up</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

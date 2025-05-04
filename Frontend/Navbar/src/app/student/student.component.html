@@ -1,0 +1,34 @@
+
+
+
+<div class="container" *ngIf=" roleId==='1'">
+
+    <h2 style="text-align: center; color: blue; text-decoration: underline;">Student Liste</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Firstname</th>
+          <th>Username</th>
+          <th>Edit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of students">
+          <td>{{item.userId}}</td>
+          <td>{{item.name}}</td>
+          <td>{{item.firstName}}</td>
+          <td>{{item.userName}}</td>
+          <td>
+            <button type="button" class="btn btn-success"  >Edit</button>
+            
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+  
+  </div>
+  
+  

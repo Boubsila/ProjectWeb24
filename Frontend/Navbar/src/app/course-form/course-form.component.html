@@ -1,0 +1,52 @@
+
+course forme 
+
+<div class="row p-3 text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3">
+  <div class="col">
+
+  </div>
+
+  <div class="col">
+    <form [formGroup]="courseForm" (ngSubmit)="savePut(courseForm)">
+      <div class="form-group">
+        <label for="exampleFormControlInput1">#*</label>
+        <input formControlName="courseId" type="text" class="form-control" id="exampleFormControlInput1"
+          placeholder="Course #" readonly>
+      </div>
+      <br>
+      <div class="form-group">
+        <label for="exampleFormControlSelect1">name*</label>
+        <input class="form-control" formControlName="name" class="form-control" id="exampleFormControlSelect1"
+          placeholder="Course name ">
+
+      </div>
+      <br>
+      <div class="form-group">
+        <label for="exampleFormControlSelect1">Description*</label>
+        <textarea class="form-control" formControlName="description" class="form-control" id="exampleFormControlSelect1"
+          placeholder="Course Description ">
+
+        </textarea>
+      </div>
+      <br>
+      <div class="form-group">
+        <label for="exampleFormControlSelect1">Assignment Deadline</label>
+        <input type="datetime-local  " class="form-control" formControlName="assignmentDeadline" [value]="courseForm.controls['assignmentDeadline'].value | date:'yyyy-MM-dd HH:mm:ss'"  id="exampleFormControlSelect1"
+          placeholder="Assignment Deadline ">
+
+      </div>
+      <br>
+      <p>*required</p>
+
+      <br>
+
+      <button type="submit" class="btn btn-outline-dark"  >Save</button>
+    </form>
+
+    <br>
+
+
+
+  </div>
+  <div class="col">
+  </div>

@@ -1,0 +1,185 @@
+<h1 style="text-align: center; border-bottom: 1px solid rgb(139, 94, 187); padding-bottom: 10px; background: linear-gradient(to right,
+ rgb(146, 142, 206), rgb(161, 154, 141)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"
+ >    Courses</h1>
+ <button class="btn btn-sm btn-primary m-2"  (click)="toggleAddNewCourse()">Add new course</button>
+
+<div style="margin-top: 20px;"></div>
+
+<table class="table table-striped" >
+	<thead>
+		<tr>
+			<th scope="col">#</th>
+			<th scope="col">Name</th>
+			<th scope="col">Description</th>
+			<th scope="col">Assignment Deadline</th>
+			<th scope="col">Edit</th>
+			<th scope="col">Delete</th>
+			<th scope="col">Assignement</th>
+			<th scope="col">Students</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngFor="let course of courses ">
+			
+			<td>{{ course.courseId }}</td>
+			<td>{{ course.name}}</td>
+			<td>{{ course.description}}</td>
+			<td>{{ course.assignmentDeadline| date:'yyyy-MM-dd  HH:mm:ss'}}</td>
+			<td><button class="btn btn-sm btn-secondary"  (click)="toggleEdit(course)">Edit</button></td> 
+			<td><button class="btn btn-sm btn-secondary" (click)="DeleteCourseById(courseId)">Delete</button></td> 
+			<td><button class="btn btn-sm btn-secondary"  (click)="toggleAssignement(course)">Assignement</button></td> 
+			<td><button class="btn btn-sm btn-secondary"  (click)=" toggleStudentByCourse(course.courseId) ">Students by course </button></td> 
+
+			
+		
+		</tr>
+	</tbody>
+</table>
+ <!-- *******************************Edit************************************* -->
+<div *ngIf="EditForm"   class="container mt-4">
+	<div class="row justify-content-center">
+	  <div class="col-lg-6">
+		<div class="border border-primary rounded p-4">
+		 
+			<form [formGroup]="courseForm" >
+			<div class="form-group" >
+			  <label for="courseId" *ngIf="EditForm">Course # *</label>
+			  <input formControlName="courseId" type="text" class="form-control" id="courseId" readonly>
+			</div>
+			<div class="form-group">
+			  <label for="name">Name *</label>
+			  <input formControlName="name" type="text" class="form-control" id="name">
+			</div>
+			<div class="form-group">
+			  <label for="description">Description *</label>
+			  <textarea formControlName="description" class="form-control" id="description"></textarea>
+			</div>
+
+			<p>* required</p>
+		
+			<button class="btn btn-outline-dark" (click)="savePut(courseForm)">Save</button>
+		  </form>
+		</div>
+	  </div>
+	</div>
+	<br>
+  </div>
+  <!-- *******************************Assignment************************************* -->
+  <div *ngIf="AddAssignment"   class="container mt-4">
+	<div class="row justify-content-center">
+	  <div class="col-lg-6">
+		<div class="border border-primary rounded p-4">
+		  <form [formGroup]="courseForm" (ngSubmit)="saveAssignment(courseForm)">
+			<div class="form-group">
+			  <label for="courseId" >Course # *</label>
+			  <input formControlName="courseId" type="text" class="form-control" id="courseId" readonly>
+			</div>
+			
+			<div class="form-group">
+			  <label for="assignmentDeadline">Assignment Deadline</label>
+			  <input formControlName="assignmentDeadline" type="datetime-local"  class="form-control" id="assignmentDeadline">
+			</div>
+			<p>* required</p>
+			<button type="submit" class="btn btn-outline-dark" >Save</button>
+		  </form>
+		</div>
+	  </div>
+	</div>
+	<br>
+  </div>
+
+<!-- *********************************Students by course *********************************** -->
+
+<div class="container" *ngIf="GetStudentByCourse">
+	<h2 style="text-align: center; color: blue; text-decoration: underline;">Student Liste by Course </h2>
+	<div class="row justify-content-center">
+	  <div class="col-lg-8">
+		<div class="border border-dark rounded p-4">
+		  <div *ngIf="GetStudentByCourse">
+			<table class="table table-striped">
+			  <thead>
+				<tr>
+				  <th scope="col">Name</th>
+				  <th scope="col">First Name</th>
+				  <th scope="col">User Name</th>
+				</tr>
+			  </thead>
+			  <tbody>
+				<tr *ngFor="let std of student">
+				  <td>{{ std.name }}</td>
+				  <td>{{ std.firstName }}</td>
+				  <td>{{ std.userName }}</td>
+				</tr>
+			  </tbody>
+			</table>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </div>
+  <!-- *********************************Add new Course *********************************** -->
+
+  <div class="container" *ngIf="AddNewCourse">
+	<h2 style="text-align: center; color: blue; text-decoration: underline;">Add new course </h2>
+	<div class="row justify-content-center">
+		<div class="col-lg-6">
+		  <div class="border border-primary rounded p-4">
+			
+
+
+			  <form [formGroup]="courseForm" (ngSubmit)="AddCourse(courseForm)">
+			  <div class="form-group" >
+				<label for="nameLabel" >Name *</label>
+				<input formControlName="name" type="text" class="form-control" id="name" >
+			  </div>
+			  <div class="form-group">
+				<label for="description">Description *</label>
+				<input formControlName="description" type="text" class="form-control" id="description">
+			  </div>
+			  <div class="form-group">
+				<label for="assignmentDeadline">Assignment Deadline</label>
+				<input formControlName="assignmentDeadline" type="datetime-local"  class="form-control" id="assignmentDeadline">
+			  </div>
+  
+			  <p>* required</p>
+			  
+			  <button type="submit" class="btn btn-outline-dark" >Add</button>
+			</form>
+
+
+
+		  </div>
+		</div>
+	  </div>
+	  <br>
+  </div>
+
+   <!-- *********************************Delete Course *********************************** -->
+
+   <div class="container" *ngIf="DeleteCourse">
+	<h2 style="text-align: center; color: blue; text-decoration: underline;">Delete course </h2>
+	<div class="row justify-content-center">
+		<div class="col-lg-6">
+		  <div class="border border-primary rounded p-4">
+			
+
+
+			  <form [formGroup]="courseForm" >
+
+			  <div class="form-group" >
+				<label for="courseId" >Course ID *</label>
+				<input formControlName="courseId" type="text" class="form-control" id="courseId" >
+			  </div>
+
+			  <p>* required</p>
+			  
+			  <button class="btn btn-outline-dark" (click)="DeleteCourseById(courseId)">Delete</button>
+			</form>
+
+
+
+		  </div>
+		</div>
+	  </div>
+	  <br>
+  </div>

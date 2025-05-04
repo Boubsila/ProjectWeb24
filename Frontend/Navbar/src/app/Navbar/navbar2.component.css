@@ -1,0 +1,7 @@
+*{
+    background-color: rgb(134, 118, 44);
+}
+.navbar-nav .nav-link.active {
+    color: blue;
+  }
+  
